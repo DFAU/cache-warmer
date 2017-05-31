@@ -3,11 +3,7 @@
 
 namespace DFAU\CacheWarmer\Command;
 
-
-use Bernard\Message\DefaultMessage;
-use Bernard\Producer;
 use DFAU\CacheWarmer\UrlCollector\XmlSitemapUrlCollector;
-use DFAU\Ghost\CmsConfigurationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
