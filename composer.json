@@ -1,0 +1,19 @@
+{
+  "name": "dfau/cache-warmer",
+  "type": "typo3-cms-extension",
+  "description": "TYPO3 Cache Warmer",
+  "license": "GPL-3.0+",
+  "replace": {
+    "cache_warmer": "self.version"
+  },
+  "require": {
+    "php" : "^7.0",
+    "typo3/cms": "^7.6 || ^8.7",
+    "dfau/ghost": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "DFAU\\CacheWarmer\\": "Classes/"
+    }
+  }
+}
