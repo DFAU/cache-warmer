@@ -6,6 +6,7 @@ namespace DFAU\CacheWarmer;
 
 use Bernard\Message\PlainMessage;
 use Bernard\Producer;
+use Bernard\Util;
 use DFAU\Ghost\CmsConfigurationFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -62,6 +63,17 @@ class Queue implements SingletonInterface
     {
         $url = $this->emitBeforeAddingUrlSignal($url);
         $this->producer->produce(new PlainMessage('CollectXmlSitemapUrls', ['url' => $url]));
+    }
+
+    public function clear()
+    {
+        // TODO this should relate more closely to the given producer in the constructor
+        $queues = CmsConfigurationFactory::getQueueFactoryForConnectionName();
+
+        foreach (['WarmCache', 'CollectXmlSitemapUrls'] as $messageName) {
+            $queueName = Util::guessQueue(new PlainMessage($messageName));
+            $queues->remove($queueName);
+        }
     }
 
     /**

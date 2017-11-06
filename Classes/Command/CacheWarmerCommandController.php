@@ -31,4 +31,9 @@ class CacheWarmerCommandController extends CommandController
         }
     }
 
+    public function clearQueueCommand()
+    {
+        $this->queue->clear();
+    }
+
 }
