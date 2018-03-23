@@ -6,6 +6,7 @@ namespace DFAU\CacheWarmer\DataHandling;
 
 use DFAU\CacheWarmer\Domain\Repository\XmlSitemapRepository;
 use DFAU\CacheWarmer\Queue;
+use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use DFAU\CacheWarmer\Utility\FrontendSimulatorUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -31,7 +32,12 @@ class CacheWarmingHook
 
         if ($cacheCmd > 0) {
 
-            FrontendSimulatorUtility::simulateEnvironmentForLinkGeneration($cacheCmd);
+            try {
+                FrontendSimulatorUtility::simulateEnvironmentForLinkGeneration($cacheCmd);
+            } catch (PageNotFoundException $exception) {
+                return;
+            }
+            
             /** @var ContentObjectRenderer $cObj */
             $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $frontendLink = $cObj->typoLink_URL(['parameter' => $cacheCmd, 'forceAbsoluteUrl' => true]);
