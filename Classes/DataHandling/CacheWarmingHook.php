@@ -7,6 +7,7 @@ namespace DFAU\CacheWarmer\DataHandling;
 use DFAU\CacheWarmer\Domain\Repository\XmlSitemapRepository;
 use DFAU\CacheWarmer\Queue;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
+use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use DFAU\CacheWarmer\Utility\FrontendSimulatorUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -35,6 +36,8 @@ class CacheWarmingHook
             try {
                 FrontendSimulatorUtility::simulateEnvironmentForLinkGeneration($cacheCmd);
             } catch (PageNotFoundException $exception) {
+                return;
+            } catch (ServiceUnavailableException $exception) {
                 return;
             }
             
