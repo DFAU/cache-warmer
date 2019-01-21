@@ -9,7 +9,7 @@
   "require": {
     "php" : "^7.0",
     "typo3/cms-core": "^9.5",
-    "dfau/ghost": "dev-master"
+    "dfau/ghost": "dev-core-9"
   },
   "autoload": {
     "psr-4": {
