@@ -4,7 +4,7 @@
   "description": "TYPO3 Cache Warmer",
   "license": "GPL-3.0+",
   "replace": {
-    "cache_warmer": "self.version"
+    "typo3-ter/cache-warmer": "self.version"
   },
   "require": {
     "php" : "^7.0",
