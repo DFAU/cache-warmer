@@ -4,24 +4,13 @@ $EM_CONF[$_EXTKEY] = array(
 	'title' => 'DFAU Cache Warmer',
 	'description' => '',
 	'category' => 'be',
-	'shy' => 0,
 	'version' => '0.0.0',
-	'dependencies' => '',
-	'conflicts' => '',
-	'priority' => 'bottom',
-	'loadOrder' => '',
-	'module' => '',
 	'state' => 'beta',
-	'uploadfolder' => 0,
 	'createDirs' => '',
-	'modify_tables' => '',
-	'clearcacheonload' => 1,
-	'lockType' => '',
+	'clearCacheOnLoad' => true,
 	'author' => 'Thomas Maroschik',
 	'author_email' => 'tmaroschik@dfau.de',
 	'author_company' => 'DFAU',
-	'CGLcompliance' => '',
-	'CGLcompliance_note' => '',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '7.0.0-0.0.0',
@@ -32,8 +21,6 @@ $EM_CONF[$_EXTKEY] = array(
 		),
 		'suggests' => array(
 		),
-	),
-	'suggests' => array(
 	),
 );
 

@@ -4,6 +4,7 @@
 namespace DFAU\CacheWarmer\Utility;
 
 
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use Doctrine\Instantiator\Instantiator;
 use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -34,7 +35,7 @@ class FrontendSimulatorUtility
         $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $typoScriptFrontendController->tmpl = GeneralUtility::makeInstance(TemplateService::class);
         $typoScriptFrontendController->cObjectDepthCounter = 100;
-        $typoScriptFrontendController->cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+        $typoScriptFrontendController->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $typoScriptFrontendController->getPageAndRootline();
     }
