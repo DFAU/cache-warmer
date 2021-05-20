@@ -1,39 +1,40 @@
 <?php
 
+declare(strict_types=1);
 
 namespace DFAU\CacheWarmer\UrlCollector;
 
-
-use GuzzleHttp\Client;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class XmlSitemapUrlCollector implements UrlCollectorInterface
 {
-
     const XPATH_SITEMAP_LOC = '//s:sitemap/s:loc';
     const XPATH_URL_LOC = '//s:url/s:loc';
 
     /**
      * @param array $options
+     *
      * @return array
+     *
      * @throws \Exception
      */
-    public function getUrls(array $options = []) : array
+    public function getUrls(array $options = []): array
     {
         $sitemaps = [$options['sitemap-url']];
 
         $urls = [];
         try {
-            while ($sitemapUrl = array_shift($sitemaps)) {
+            while ($sitemapUrl = \array_shift($sitemaps)) {
                 $sitemapBody = GeneralUtility::getUrl($sitemapUrl);
                 if (!$sitemapBody) {
                     continue;
                 }
+
                 $reader = $this->getXmlReader($sitemapBody);
-                $sitemaps = array_merge($sitemaps, $this->getUrlsAsStrings($this->getLocElements($reader, self::XPATH_SITEMAP_LOC)));
-                $urls = array_merge($urls, $this->getUrlsAsStrings($this->getLocElements($reader, self::XPATH_URL_LOC)));
+                $sitemaps = \array_merge($sitemaps, $this->getUrlsAsStrings($this->getLocElements($reader, self::XPATH_SITEMAP_LOC)));
+                $urls = \array_merge($urls, $this->getUrlsAsStrings($this->getLocElements($reader, self::XPATH_URL_LOC)));
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             if (!$this->isInvalidXmlException($e)) {
                 throw $e;
             }
@@ -52,8 +53,9 @@ class XmlSitemapUrlCollector implements UrlCollectorInterface
         /** @var string[] $return */
         $stringUrls = [];
         foreach ($xmlElements as $xmlElement) {
-            $stringUrls[] = (string)$xmlElement;
+            $stringUrls[] = (string) $xmlElement;
         }
+
         return $stringUrls;
     }
 
@@ -62,9 +64,9 @@ class XmlSitemapUrlCollector implements UrlCollectorInterface
      *
      * @return bool
      */
-    protected function isInvalidXmlException(\Exception $e)
+    protected function isInvalidXmlException(\Throwable $e)
     {
-        return $e->getMessage() == 'String could not be parsed as XML';
+        return 'String could not be parsed as XML' == $e->getMessage();
     }
 
     /**

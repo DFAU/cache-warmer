@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace DFAU\CacheWarmer\Command;
 
@@ -7,11 +8,12 @@ use DFAU\CacheWarmer\UrlCollector\XmlSitemapUrlCollector;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
+// v10change TODO: rewrite
 class CacheWarmerCommandController extends CommandController
 {
-
     /**
      * @var \DFAU\CacheWarmer\Queue
+     *
      * @inject
      */
     protected $queue;
@@ -24,7 +26,7 @@ class CacheWarmerCommandController extends CommandController
         /** @var XmlSitemapUrlCollector $urlCollector */
         $urlCollector = GeneralUtility::makeInstance(XmlSitemapUrlCollector::class);
         $urls = $urlCollector->getUrls(['sitemap-url' => $sitemapUrl]);
-        $urls = array_unique($urls);
+        $urls = \array_unique($urls);
 
         foreach ($urls as $url) {
             $this->queue->addUrl($url);
@@ -35,5 +37,4 @@ class CacheWarmerCommandController extends CommandController
     {
         $this->queue->clear();
     }
-
 }

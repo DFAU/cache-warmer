@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace DFAU\CacheWarmer;
-
 
 use Bernard\Message\PlainMessage;
 use Bernard\Producer;
@@ -14,36 +14,39 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 class Queue implements SingletonInterface
 {
-
-    /**
-     * @var Producer
-     */
+    /** @var Producer */
     protected $producer;
 
-    /**
-     * @var Dispatcher
-     */
+    /** @var Dispatcher */
     protected $signalSlotDispatcher;
 
     /**
      * Queue constructor.
+     *
      * @param Producer|null $producer
      * @param Dispatcher $signalSlotDispatcher $signalSlotDispatcher
      */
     public function __construct(Producer $producer = null, Dispatcher $signalSlotDispatcher = null)
     {
-        if ($producer === null) {
+        if (null === $producer) {
             $queues = CmsConfigurationFactory::getQueueFactoryForConnectionName();
             /** @var Producer $producer */
-            $producer = GeneralUtility::makeInstance(Producer::class, $queues,
-                CmsConfigurationFactory::getEventDispatcherForDirectionAndConnectionName($queues,
-                    CmsConfigurationFactory::MIDDLEWARE_DIRECTION_PRODUCER));
+            $producer = GeneralUtility::makeInstance(
+                Producer::class,
+                $queues,
+                CmsConfigurationFactory::getEventDispatcherForDirectionAndConnectionName(
+                    $queues,
+                    CmsConfigurationFactory::MIDDLEWARE_DIRECTION_PRODUCER
+                )
+            );
         }
+
         $this->producer = $producer;
 
-        if ($signalSlotDispatcher === null) {
+        if (null === $signalSlotDispatcher) {
             $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         }
+
         $this->signalSlotDispatcher = $signalSlotDispatcher;
     }
 
@@ -80,6 +83,7 @@ class Queue implements SingletonInterface
      * Emits a signal before the url is added
      *
      * @param string $url
+     *
      * @return array Modified $url
      */
     protected function emitBeforeAddingUrlSignal($url)
@@ -92,6 +96,7 @@ class Queue implements SingletonInterface
      * Emits a signal before the xml sitemap url is added
      *
      * @param string $url
+     *
      * @return array Modified $url
      */
     protected function emitBeforeAddingXmlSitemapUrlSignal($url)
@@ -99,5 +104,4 @@ class Queue implements SingletonInterface
         $signalArguments = $this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeAddingXmlSitemapUrl', [$url]);
         return $signalArguments[0];
     }
-
 }

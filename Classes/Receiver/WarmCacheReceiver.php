@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace DFAU\CacheWarmer\Receiver;
 
@@ -8,7 +9,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class WarmCacheReceiver
 {
-
     /**
      * @param PlainMessage $message
      */

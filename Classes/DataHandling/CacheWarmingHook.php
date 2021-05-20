@@ -1,15 +1,15 @@
 <?php
 
+declare(strict_types=1);
 
 namespace DFAU\CacheWarmer\DataHandling;
 
-
 use DFAU\CacheWarmer\Domain\Repository\XmlSitemapRepository;
 use DFAU\CacheWarmer\Queue;
+use DFAU\CacheWarmer\Utility\FrontendSimulatorUtility;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use DFAU\CacheWarmer\Utility\FrontendSimulatorUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class CacheWarmingHook
@@ -19,8 +19,6 @@ class CacheWarmingHook
      * Executed by the clearCachePostProc Hook
      *
      * @param array $cacheCmd
-     *
-     * @return    void
      */
     public function clearCache(array $cacheCmd)
     {
@@ -32,7 +30,6 @@ class CacheWarmingHook
         $cacheCmd = isset($cacheCmd['cacheCmd']) ? $cacheCmd['cacheCmd'] : $cacheCmd['uid_page'];
 
         if ($cacheCmd > 0) {
-
             try {
                 FrontendSimulatorUtility::simulateEnvironmentForLinkGeneration($cacheCmd);
             } catch (PageNotFoundException $exception) {
@@ -40,7 +37,7 @@ class CacheWarmingHook
             } catch (ServiceUnavailableException $exception) {
                 return;
             }
-            
+
             /** @var ContentObjectRenderer $cObj */
             $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $frontendLink = $cObj->typoLink_URL(['parameter' => $cacheCmd, 'forceAbsoluteUrl' => true]);
@@ -49,15 +46,12 @@ class CacheWarmingHook
             if ($frontendLink) {
                 $queue->addUrl($frontendLink);
             }
-
-        } elseif ($cacheCmd === 'pages' || $cacheCmd === 'all') {
-
+        } elseif ('pages' === $cacheCmd || 'all' === $cacheCmd) {
             /** @var XmlSitemapRepository $xmlSitemapRepository */
             $xmlSitemapRepository = GeneralUtility::makeInstance(XmlSitemapRepository::class);
             foreach ($xmlSitemapRepository->findAll() as $xmlSitemapUrl) {
                 $queue->addXmlSitemapUrl($xmlSitemapUrl);
             }
-
         }
     }
 }

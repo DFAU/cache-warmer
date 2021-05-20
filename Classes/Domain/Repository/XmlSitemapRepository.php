@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace DFAU\CacheWarmer\Domain\Repository;
 
@@ -8,13 +9,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class XmlSitemapRepository
 {
-
     /**
-     *
+     * v10change TODO: this won't work like before as the sys_domain record does not exist anymore
      */
     public function findAll()
     {
-        if (class_exists(ConnectionPool::class)) {
+        if (\class_exists(ConnectionPool::class)) {
             /** @var ConnectionPool $connectionPool */
             $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             $connection = $connectionPool->getConnectionForTable('sys_domain');
@@ -29,15 +29,13 @@ class XmlSitemapRepository
                 )
                 ->execute()
                 ->fetchAll();
-
         } else {
             $activeDomains = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('domainName,sitemapFileName', 'sys_domain', 'NOT hidden AND redirectTo LIKE "" AND sitemapFileName NOT LIKE ""');
         }
 
-        $activeDomains = array_map(function($domainRecord) {
+        $activeDomains = \array_map(function ($domainRecord) {
             return 'https://' . $domainRecord['domainName'] . '/' . $domainRecord['sitemapFileName'];
         }, $activeDomains);
         return $activeDomains;
     }
-
 }

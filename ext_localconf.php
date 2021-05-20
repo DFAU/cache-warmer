@@ -1,6 +1,6 @@
 <?php
-defined('TYPO3_MODE') or die();
 
+\defined('TYPO3_MODE') or die();
 
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ghost']['connections'][\DFAU\Ghost\CmsConfigurationFactory::DEFAULT_CONNECTION_NAME]['receivers']['WarmCache'] = \DFAU\CacheWarmer\Receiver\WarmCacheReceiver::class;
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ghost']['connections'][\DFAU\Ghost\CmsConfigurationFactory::DEFAULT_CONNECTION_NAME]['receivers']['CollectXmlSitemapUrls'] = \DFAU\CacheWarmer\Receiver\CollectXmlSitemapUrlsReceiver::class;
