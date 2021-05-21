@@ -25,16 +25,15 @@ class FrontendSimulatorUtility
         /** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $typoScriptFrontendController */
         $GLOBALS['TSFE'] = $typoScriptFrontendController = (new Instantiator())->instantiate(TypoScriptFrontendController::class);
         $typoScriptFrontendController->absRefPrefix = '/';
-        // v10change TODO: realurl is not used anymore so this should change
-        $typoScriptFrontendController->config = ['config' => ['absRefPrefix' => '/', 'tx_realurl_enable' => true, 'typolinkEnableLinksAcrossDomains' => true], 'mainScript' => 'index.php'];
+        $typoScriptFrontendController->config = ['config' => ['absRefPrefix' => '/', 'typolinkEnableLinksAcrossDomains' => true], 'mainScript' => 'index.php'];
         $typoScriptFrontendController->id = $pid;
         $typoScriptFrontendController->fe_user = new \stdClass();
         $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $typoScriptFrontendController->tmpl = GeneralUtility::makeInstance(TemplateService::class);
         $typoScriptFrontendController->cObjectDepthCounter = 100;
         $typoScriptFrontendController->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        // v10change TODO: adapt as its protected now
-        $typoScriptFrontendController->getPageAndRootline();
+        // v10change TODO: adapt as its protected now - this whole
+        // $typoScriptFrontendController->getPageAndRootline();
     }
 
     /**

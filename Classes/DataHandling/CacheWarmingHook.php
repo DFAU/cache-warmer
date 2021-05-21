@@ -31,6 +31,7 @@ class CacheWarmingHook
 
         if ($cacheCmd > 0) {
             try {
+                // v10change TODO: This should be replaced by middleware usage @see Deprecation-84965-VariousTypoScriptFrontendControllerMethods.rst
                 FrontendSimulatorUtility::simulateEnvironmentForLinkGeneration($cacheCmd);
             } catch (PageNotFoundException $exception) {
                 return;

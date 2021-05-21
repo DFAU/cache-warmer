@@ -1,0 +1,19 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  DFAU\CacheWarmer\:
+    resource: '../Classes/*'
+
+  DFAU\CacheWarmer\Domain\Repository\XmlSitemapRepository:
+    public: true
+
+  DFAU\CacheWarmer\Command\CacheWarmerCommand:
+    autowire: true
+    autoconfigure: true
+    tags:
+      - name: 'console.command'
+        command: 'cachewarmer:command'
+        schedulable: true
