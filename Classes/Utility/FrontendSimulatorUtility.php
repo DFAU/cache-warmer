@@ -21,7 +21,7 @@ class FrontendSimulatorUtility
      */
     public static function simulateEnvironmentForLinkGeneration(int $pid)
     {
-        self::$tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : null;
+        self::$tsfeBackup = $GLOBALS['TSFE'] ?? null;
         /** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $typoScriptFrontendController */
         $GLOBALS['TSFE'] = $typoScriptFrontendController = (new Instantiator())->instantiate(TypoScriptFrontendController::class);
         $typoScriptFrontendController->absRefPrefix = '/';
@@ -43,6 +43,8 @@ class FrontendSimulatorUtility
     {
         if (!empty(self::$tsfeBackup)) {
             $GLOBALS['TSFE'] = self::$tsfeBackup;
+        } else {
+            unset($GLOBALS['TSFE']);
         }
     }
 }
